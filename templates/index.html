@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Socket Demo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.5.1/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" style="margin-left: 50pt; margin-top: 5pt;">
+            <div class="col-xl-8">
+                <div class="row" style="background-color: #f1f1f1; margin-bottom: 5pt;">
+                    <div class="col-auto">
+                        <h5>ACE UNI Time: —:—
+                            <br>Amount 100,000 Price 25.0999</h5>
+                    </div>
+                </div>
+
+                <div class="row" style="background-color: #f1f1f1; margin-bottom: 5pt;">
+                    <div class="col-auto DATE">
+                    </div>
+                </div>
+
+                <div class="row" style="background-color: #f1f1f1; margin-bottom: 5pt;">
+                    <div class="col">
+                        <h3>ACE</h3>
+                        <table class="table" style="line-height: 0.65; width: 100%;">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col ">Instrument</th>
+                                    <th scope="col ">Last price</th>
+                                    <th scope="col ">bid1</th>
+                                    <th scope="col ">ask1</th>
+                                    <th scope="col ">Target Ex</th>
+                                    <th scope="col ">Competiter</th>
+                                    <th scope="col ">diff%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" id="BTC">BTC</th>
+                                    <td id="BTC-lastprice"></td>
+                                    <td id="BTC-bid"></td>
+                                    <td id="BTC-ask"></td>
+                                    <td id="BTC-target"></td>
+                                    <td id="BTC-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="ETH">ETH</th>
+                                    <td id="ETH-lastprice"></td>
+                                    <td id="ETH-bid"></td>
+                                    <td id="ETH-ask"></td>
+                                    <td id="ETH-target"></td>
+                                    <td style="width: 20%;" id="ETH-competitor"></td>
+                                    <td> -0.36% </td>
+                                    <!--到時候要接收 competiter選單的value、去調整樣式（改顏色）-->
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="USDT">USDT</th>
+                                    <td id="USDT-lastprice"></td>
+                                    <td id="USDT-bid"></td>
+                                    <td id="USDT-ask"></td>
+                                    <td id="USDT-target"></td>
+                                    <td id="USDT-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="USDC">USDC</th>
+                                    <td id="USDC-lastprice"></td>
+                                    <td id="USDC-bid"></td>
+                                    <td id="USDC-ask"></td>
+                                    <td id="USDC-target"></td>
+                                    <td id="ETH-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="LTC">LTC</th>
+                                    <td id="LTC-lastprice"></td>
+                                    <td id="LTC-bid"></td>
+                                    <td id="LTC-ask"></td>
+                                    <td id="LTC-target"></td>
+                                    <td id="LTC-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="YFI">YFI</th>
+                                    <td id="YFI-lastprice"></td>
+                                    <td id="YFI-bid"></td>
+                                    <td id="YFI-ask"></td>
+                                    <td id="YFI-target"></td>
+                                    <td id="YFI-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="CRO">CRO</th>
+                                    <td id="CRO-lastprice"></td>
+                                    <td id="CRO-bid"></td>
+                                    <td id="CRO-ask"></td>
+                                    <td id="CRO-target"></td>
+                                    <td id="CRO-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="MANA">MANA</th>
+                                    <td id="MANA-lastprice"></td>
+                                    <td id="MANA-bid"></td>
+                                    <td id="MANA-ask"></td>
+                                    <td id="MANA-target"></td>
+                                    <td id="MANA-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="ANKR">ANKR</th>
+                                    <td id="ANKR-lastprice"></td>
+                                    <td id="ANKR-bid"></td>
+                                    <td id="ANKR-ask"></td>
+                                    <td id="ANKR-target"></td>
+                                    <td id="ANKR-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="SXP">SXP</th>
+                                    <td id="SXP-lastprice"></td>
+                                    <td id="SXP-bid"></td>
+                                    <td id="SXP-ask"></td>
+                                    <td id="SXP-target"></td>
+                                    <td id="MANA-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="CHZ">CHZ</th>
+                                    <td id="CHZ-lastprice"></td>
+                                    <td id="CHZ-bid"></td>
+                                    <td id="CHZ-ask"></td>
+                                    <td id="CHZ-target"></td>
+                                    <td id="CHZ-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="ENJ">ENJ</th>
+                                    <td id="ENJ-lastprice"></td>
+                                    <td id="ENJ-bid"></td>
+                                    <td id="ENJ-ask"></td>
+                                    <td id="ENJ-target"></td>
+                                    <td id="ENJ-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="CAKE">CAKE</th>
+                                    <td id="CAKE-lastprice"></td>
+                                    <td id="CAKE-bid"></td>
+                                    <td id="CAKE-ask"></td>
+                                    <td id="CAKE-target"></td>
+                                    <td id="CAKE-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="DOT">DOT</th>
+                                    <td id="DOT-lastprice"></td>
+                                    <td id="DOT-bid"></td>
+                                    <td id="DOT-ask"></td>
+                                    <td id="DOT-target"></td>
+                                    <td id="DOT-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="SHIB">SHIB</th>
+                                    <td id="SHIB-lastprice"></td>
+                                    <td id="SHIB-bid"></td>
+                                    <td id="SHIB-ask"></td>
+                                    <td id="SHIB-target"></td>
+                                    <td id="SHIB-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="DOGE">DOGE</th>
+                                    <td id="DOGE-lastprice"></td>
+                                    <td id="DOGE-bid"></td>
+                                    <td id="DOGE-ask"></td>
+                                    <td id="DOGE-target"></td>
+                                    <td id="DOGE-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row " id="MATIC">MATIC</th>
+                                    <td id="MATIC-lastprice"></td>
+                                    <td id="MATIC-bid"></td>
+                                    <td id="MATIC-ask"></td>
+                                    <td id="MATIC-target"></td>
+                                    <td id="MATIC-competitor"></td>
+                                    <td> -0.36% </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-bar" style="float: right; width: 25%; max-width: 50%; margin-left: 30pt; margin-right: 30pt;">
+                <div class="row " style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt; ">
+                            <h6>銀行匯率</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">買進</th>
+                                    <th scope="col ">賣出</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="buy-USD"></td>
+                                    <td id="sale-USD"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="row" style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt; ">
+                            <h6>SUM-Profits</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row ">vol</th>
+                                    <td id="SUM-Profits-vol"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">nm</th>
+                                    <td id="SUM-Profits-nm"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row" style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt; ">
+                            <h6>Ace_stable</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row ">vol</th>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row ">nm</th>
+                                    <td>數量</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row " style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt; ">
+                            <h6>CBL-成交量</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row ">vol</th>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row ">nm</th>
+                                    <td>數量</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row " style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt;">
+                            <h6>Binance</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row ">vol</th>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row ">nm</th>
+                                    <td>數量</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row " style="background-color: #f1f1f1; margin-bottom: 5pt; ">
+                    <div class="col-sm-5 ">
+                        <div style="margin-top: 30pt; margin-bottom: 30pt; ">
+                            <h6>FTX</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 ">
+                        <table class="table ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row ">vol</th>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row ">nm</th>
+                                    <td>數量</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+<!--
+<script>
+$(document).ready(function () {
+    namespace = '/abcd';
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {transports: ['websocket']});
+    socket.on('USDT', function (res) {
+        var t = res.time;
+        var m = res.max_p;
+        var b = res.bito_p;
+        var a = res.ace_p;
+        if (t) {
+            if ( (a>m) | (a>b)){
+                $("#test-price ").prepend( ('<tr> <td>') + t + '<td>' + m + '<td>' + b + '<td style="background:red; ">' + a);
+            }else{
+                $("#test-price ").prepend( ('<tr> <td>') + t + '<td>' + m + '<td>' + b + '<td>' + a);
+            }
+            
+            if ($("#test-price ").children().length > 5 ){
+                $("#test-price ").children().get($("#test-price ").children().length - 1).remove();
+            }
+
+        }
+
+    });
+});
+</script> 
+-->
+
+<script>
+    $(document).ready(function() {
+        namespace = '/abcd';
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {
+            transports: ['websocket']
+        });
+
+        socket.on('competitor', function(res) {
+            const currency = ['BTC', 'ETH', 'USDT', 'USDC', 'LTC', 'YFI', 'CRO', 'MANA', 'ANKR', 'SXP', 'CHZ', 'ENJ', 'CAKE', 'DOT', 'SHIB', 'DOGE', 'MATIC'];
+            for (let c in currency) {
+                var max_p = res['MAX'][currency[c]]
+                var bito_p = res['BitoPro'][currency[c]]
+                $("#" + currency[c] + "-competitor").prepend('<span style="line-height: 13pt;">' + 'MAX: ' + max_p + '<br>' + '<span style="line-height: 13pt;">' + 'BitoPro: ' + bito_p);
+
+                if ($("#" + currency[c] + "-competitor").children().length > 1) {
+                    $("#" + currency[c] + "-competitor").children().get($("#" + currency[c] + "-competitor").children().length - 1).remove();
+                }
+            }
+        });
+
+        socket.on('target_ex', function(res) {
+            const currency = ['BTC', 'ETH', 'USDT', 'USDC', 'LTC', 'YFI', 'CRO', 'MANA', 'ANKR', 'SXP', 'CHZ', 'ENJ', 'CAKE', 'DOT', 'SHIB', 'DOGE', 'MATIC'];
+            for (let c in currency) {
+                var instruUSD = currency[c] + '_USD'
+                var target = res[currency[c]]
+                var target_usd = res[instruUSD]
+                $("#" + currency[c] + "-target").prepend('<span style="line-height: 12pt;">' + target + '<br>' + '<span style="font-size: 8pt; color: grey; line-height: 50%;">' + target_usd + ' USD');
+
+                if ($("#" + currency[c] + "-target").children().length > 1) {
+                    $("#" + currency[c] + "-target").children().get($("#" + currency[c] + "-target").children().length - 1).remove();
+                }
+            }
+        });
+
+        socket.on('sum_profit', function(res) {
+            var date = res.DATE
+            var vol = res.TWD;
+            var nm = res.區間利潤率;
+            var buyUSD = res.buy_sinopacUSD
+            var saleUSD = res.sale_sinopacUSD
+            const currency = ['BTC', 'ETH', 'USDT', 'USDC', 'LTC', 'YFI', 'CRO', 'MANA', 'ANKR', 'SXP', 'CHZ', 'ENJ', 'CAKE', 'DOT', 'SHIB', 'DOGE', 'MATIC']
+
+            if (date) {
+                $(".DATE").prepend('<p>' + 'Date: ' + date);
+                $("#SUM-Profits-vol ").prepend('<span>' + vol);
+                $("#SUM-Profits-nm ").prepend('<span>' + nm);
+                $("#buy-USD").prepend('<span>' + buyUSD)
+                $("#sale-USD").prepend('<span>' + saleUSD)
+
+                for (let c in currency) {
+                    var last_price = res[currency[c]]
+                    $("#" + currency[c] + "-lastprice").prepend('<span>' + last_price);
+
+                    if ($("#" + currency[c] + "-lastprice").children().length > 1) {
+                        $("#" + currency[c] + "-lastprice").children().get($("#" + currency[c] + "-lastprice").children().length - 1).remove();
+                    }
+
+                }
+
+                if ($(".DATE").children().length > 1) {
+                    $(".DATE").children().get($(".DATE").children().length - 1).remove();
+                }
+
+                if ($("#SUM-Profits-vol").children().length > 1) {
+                    $("#SUM-Profits-vol").children().get($("#SUM-Profits-vol").children().length - 1).remove();
+                }
+
+                if ($("#SUM-Profits-nm").children().length > 1) {
+                    $("#SUM-Profits-nm").children().get($("#SUM-Profits-nm").children().length - 1).remove();
+                }
+
+                if ($("#buy-USD").children().length > 1) {
+                    $("#buy-USD").children().get($("#buy-USD").children().length - 1).remove();
+                }
+
+                if ($("#sale-USD").children().length > 1) {
+                    $("#sale-USD").children().get($("#sale-USD").children().length - 1).remove();
+                }
+            }
+        });
+    });
+</script>
+
+</html>
+
+
+
+
+<!--
+    參考：
+    推播的東東：https://www.twblogs.net/a/5c264bb8bd9eee16b3db93d7
+    定時的東東：https://www.cnblogs.com/luozx207/p/9714487.html
+    -->
