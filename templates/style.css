@@ -1,0 +1,12 @@
+.side-bar {
+    float: right;
+    width: 25%;
+    max-width: 50%;
+    margin-left: 30pt;
+    margin-right: 30pt;
+}
+
+.pretty-select {
+    border: 0pt;
+    background-color: #f1f1f1;
+}
